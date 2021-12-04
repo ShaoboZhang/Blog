@@ -2,21 +2,25 @@
 
 ## 1.1 现有的数据存储方式
 
-> - 内存存储
->   - 程序运行产生的数据(变量、数组、集合、对象)，保存在内存中
-> - 文件存储
->   - 通过文件存储，保存在硬盘中
+> **内存存储**
+
+- 程序运行产生的数据(变量、数组、集合、对象)，保存在内存中
+
+> **文件存储**
+
+- 通过文件存储，保存在硬盘中
 
 ## 1.2 以上存储方式存在的缺陷
 
-> - 内存存储
->   - 没有备份、恢复机制，随着程序运行结束数据会丢失
->   - 不适合存储大量级数据
-> - 文件存储
->   - 没有数据类型区分
->   - 没有访问安全限制
+> **内存存储**
 
+- 没有备份、恢复机制，随着程序运行结束数据会丢失；
+- 不适合存储大量级数据
 
+> **文件存储**
+
+- 没有数据类型区分
+- 没有访问安全限制
 
 ------
 
@@ -28,10 +32,21 @@
 
 ## 2.2 分类
 
-> - 网状结构数据库：IDS(Integrated Data Source, GE公司)，以节点形式存储和访问。
-> - 层次结构数据库：IMS(Information Management System, IBM公司)，以定向有序的树状结构存储和访问。
-> - 关系结构数据库：MySQL、SQL Server、Oracle、DB2，以表格形式存储，多表间建立关联关系，通过分类、合并、连接、选取等运输实现访问。
-> - 非关系型数据库：MongoDB、Redis、ElastecSearch，多数使用哈希表，构建特定的键(key)和一个指向特定数据的指针(value)形成键值对以供使用。
+> **网状结构数据库**
+
+- IDS(Integrated Data Source, GE公司)，以节点形式存储和访问。
+
+> **层次结构数据库**
+
+- IMS(Information Management System, IBM公司)，以定向有序的树状结构存储和访问。
+
+> **关系结构数据库**
+
+- MySQL、SQL Server、Oracle、DB2，以表格形式存储，多表间建立关联关系，通过分类、合并、连接、选取等运输实现访问。
+
+> **非关系型数据库**
+
+- MongoDB、Redis、ElastecSearch，多数使用哈希表，构建特定的键(key)和一个指向特定数据的指针(value)形成键值对以供使用。
 
 
 
@@ -41,38 +56,55 @@
 
 ## 3.1 概念
 
-> **数据库管理系统 (Database Management System, DBMS)**：
->
-> - 指一种操作、管理数据库的大型软件用于建立、使用、维护数据库。
-> - 对数据库进行统一地管理和控制，以保证数据库的安全性和完整性。
-> - 用户通过DBMS访问数据库中的数据。
+> **数据库管理系统 (Database Management System, DBMS)**
+
+- 指一种操作、管理数据库的大型软件用于建立、使用、维护数据库。
+- 对数据库进行统一地管理和控制，以保证数据库的安全性和完整性。
+- 用户通过DBMS访问数据库中的数据。
 
 ## 3.2 常见的DBMS
 
-> - Oracle：业界比较成功的关系型DBMS，可以运行在各主流操作系统平台，完全支持所有的工业标准，并获得最高级别的ISO标准安全性认证。
-> - DB2：IBM公司的产品，采用多进程、多线索体系结构，其功能足以满足大中型企业需要，并可灵活地服务于中小型电子商务解决方案。
-> - SQL Server：Microsoft公司推出的关系型DBMS，具有使用方便、可伸缩性好、与相关软件集成度高等优点。
-> - SQLLite：应用在手机端的数据库。
+> **Oracle**
+
+- 业界比较成功的关系型DBMS，可以运行在各主流操作系统平台，完全支持所有的工业标准，并获得最高级别的ISO标准安全性认证。
+
+> **DB2**
+
+- IBM公司的产品，采用多进程、多线索体系结构，其功能足以满足大中型企业需要，并可灵活地服务于中小型电子商务解决方案。
+
+> **SQL Server**
+
+- Microsoft公司推出的关系型DBMS，具有使用方便、可伸缩性好、与相关软件集成度高等优点。
+
+> **SQLLite**
+
+- 应用在手机端的数据库。
 
 
 
 ------
 
-# 四、MySQL
+# 四、MySQL安装与配置
 
 ## 4.1 简介
 
-> MySQL是一个关系型数据库管理系统(Relational Database Management System, RDBMS):
->
-> - 由瑞典MySQL AB公司开发，后被Oracle收购。
-> - 是最流行的RDBMS之一。
-> - 在web应用方面，也是最好的RDBMS应用软件之一。
+> **MySQL**
+
+- 关系型DBMS(Relational Database Management System, RDBMS)
+
+- 由瑞典MySQL AB公司开发，后被Oracle收购。
+- 是最流行的RDBMS之一。
+- 在web应用方面，也是最好的RDBMS应用软件之一。
 
 ## 4.2 访问与下载
 
-> 官方网站：https://www.mysql.com/
->
-> 下载地址：https://dev.mysql.com/downloads/mysql/
+> **官方网站**
+
+https://www.mysql.com/
+
+> **下载地址**
+
+https://dev.mysql.com/downloads/mysql/
 
 ## 4.3 安装
 
@@ -88,33 +120,33 @@
 
 ### 4.4.1 在终端加入环境路径
 
-> 创建`.zshrc`文件
+> **创建`.zshrc`文件**
 
 - `$cd ~/`
 
 - `$touch zshrc`
 
-> 添加MySQL环境路径
+> **添加MySQL环境路径**
 
 - 打开文件 `$open ~/.zshrc`
 
 - 添加 `PATH=$PATH:/usr/local/mysql/bin`
 
-> 激活`.zshrc`文件
+> **激活`.zshrc`文件**
 
 - `$source .zshrc`
 
 ### 4.4.2 登录
 
-> 登录指令
+> **登录指令**
 
 `$mysql -uroot -p`
 
-> 输入密码
+> **输入密码**
 
 输入安装过程中设置的密码
 
-> 登录成功
+> **登录成功**
 
 出现如下界面则说明登录成功
 
@@ -122,21 +154,21 @@
 
 ## 4.5 MySQL服务指令
 
-> 启动服务
+> **启动服务**
 
 ​	`$sudo /usr/local/mysql/support-files/mysql.server start`
 
-> 停止服务
+> **停止服务**
 
 ​	`$sudo /usr/local/mysql/support-files/mysql.server stop`
 
-> 重启服务
+> **重启服务**
 
 ​	`$sudo /usr/local/mysql/support-files/mysql.server restart`
 
 ## 4.6 MySQL目录结构
 
-> 核心文件介绍
+> **核心文件介绍**
 
 | **文件夹名称** |      **内容**      |
 | :------------: | :----------------: |
@@ -147,7 +179,7 @@
 
 ## 4.7 MySQL配置文件
 
-> 核心配置参数
+> **核心配置参数**
 
 |          参数          |         描述         |
 | :--------------------: | :------------------: |
@@ -164,20 +196,42 @@
 
 ## 5.1 概念
 
-> SQL (Structured Query Language)：结构化查询语言，用于存取数据、更新、查询和管理RDBMS的程序设计语言。
+> **SQL (Structured Query Language)**
 
-- **经验：通常执行对数据库的“增删改查”，简称"CRUD"，即Create、Read、Update、Delete**
+结构化查询语言，用于存取数据、更新、查询和管理RDBMS的程序设计语言。
+
+**说明：通常执行对数据库的“增删改查”，简称"CRUD"，即CREATE、Read、Update、Delete。**
 
 ## 5.2 MySQL应用
 
-> 对于数据库的操作，需要进入MySQL环境下进行指令输入，并在一句指令的末尾以分号结束。
+对于数据库的操作，需要进入MySQL环境下进行指令输入，并在一句指令的末尾以分号结束。
 
-## 5.3 基本命令
+## 5.3 客户端 (Navicat)
 
-> 查看MySQL中所有的数据库
+> **下载地址**
 
-``` sh
-mysql> show databases;
+https://www.macwk.com/soft/navicat-premium/
+
+> **新建连接**
+
+![image-20211203183842532](/Users/shaobo/Library/Application Support/typora-user-images/image-20211203183842532.png)
+
+> **数据库登录**
+
+![image-20211203183759031](/Users/shaobo/Library/Application Support/typora-user-images/image-20211203183759031.png)
+
+
+
+------
+
+# 六、数据库操作
+
+## 6.1 数据库查看 (SHOW)
+
+> **查看所有数据库**
+
+``` mysql
+SHOW DATABASES;
 ```
 
 |     数据库名称     |                             描述                             |
@@ -187,83 +241,79 @@ mysql> show databases;
 | performance_schema |  性能优化的数据库，MySQL5.5版本后新增的一个性能优化的引擎。  |
 |        sys         | 系统数据库，MySQL5.7版本后新增的可以快速了解元数据信息的系统库。<br/>便于发现数据库的多样信息，解决性能瓶颈问题。 |
 
-> 创建自定义数据库
+> **查看特定数据库信息**
 
-```sh
+```mysql
+SHOW CREATE DATABASE mydb1;
+```
+
+## 6.2 数据库创建 (CREATE)
+
+> **基础创建方式**
+
+```mysql
 # 创建一个名称为mydb1的数据库
-mysql> create database mydb1;
+CREATE DATABASE mydb1;
+```
 
+> **创建时指定字符编码**
+
+```mysql
 # 创建一个名称为mydb1、字符编码为utf-8的数据库
-mysql> create database mydb1 character set utf8;
+CREATE DATABASE mydb1 CHARACTER SET utf8;
+```
 
+> **仅当原文件不存在时创建**
+
+```mysql
 # 若名称为mydb1的数据库不存在，则创建一个名称为mydb1、字符编码为utf-8的数据库
-mysql> create database if not exists mydb1 character set utf8;
+CREATE DATABASE IF NOT EXISTS mydb1 CHARACTER SET utf8;
 ```
 
-> 查看数据库信息
+## 6.3 数据库修改 (ALTER)
 
-```sh
-mysql> show create database mydb1;
-```
-
-> 修改数据库
-
-```sh
+```mysql
 # 更改数据库的字符编码为gbk
-mysql> alter database mydb1 character set gbk;
+ALTER DATABASE mydb1 CHARACTER SET gbk;
 ```
 
-> 删除数据库
+## 6.4 数据库删除 (DROP)
 
-```sh
-mysql> drop database mydb1;
+```mysql
+DROP DATABASE mydb1;
 ```
 
-> 使用数据库
+## 6.5 数据库使用 (USE)
 
-```sh
-mysql> use mydb1;
+```mysql
+USE mydb1;
 ```
 
-> 查看当前使用的数据库
+## 6.6 当前数据库查看 (**SELECT**)
 
-```shell
-mysql> select database();
+```mysql
+SELECT DATABASE();
 ```
 
 
 
 ------
 
-# 六、客户端 (Navicat)
+# 七、数据表基础知识
 
-> 下载地址
+> 一个数据库里可包含多个**数据表(table)**，表中的一行数据代表一个**实体(entity)**，表中的一列数据代表实体的一个**属性(attribute)**。
 
-https://www.macwk.com/soft/navicat-premium/
+**说明：基于数据表、实体和属性的意义**
 
-> 新建MySQL连接
-
-![image-20211203183842532](/Users/shaobo/Library/Application Support/typora-user-images/image-20211203183842532.png)
-
-> 登录MySQL
-
-![image-20211203183759031](/Users/shaobo/Library/Application Support/typora-user-images/image-20211203183759031.png)
-
-> 出现以下界面，则登录成功
-
-![image-20211203184333275](/Users/shaobo/Library/Application Support/typora-user-images/image-20211203184333275.png)
-
-
-
-------
-
-# 七、数据库基础知识
+- **参照Java程序中的类(class)，通常用首字母大写、其余字母小写的方式为数据表命名。**
+- **参照Java程序中的字段(field)，通常采用驼峰命名法为属性命名。**
+- **在创建数据表时，需要指定属性的名称、数据类型和约束条件。**
 
 ## 7.1 数据类型
 
 > MySQL支持多种数据类型，主要包括三类：数值、日期/时间、字符串。
 
-(1) 数值类型
+### 7.1.1 数值类型
 
 |     类型     |              大小(字节)               |                         范围(有符号)                         | 范围(无符号) |     用途     |
 | :----------: | :-----------------------------------: | :----------------------------------------------------------: | :----------: | :----------: |
@@ -272,7 +322,7 @@ https://www.macwk.com/soft/navicat-premium/
 | DOUBLE(M,D)  | 8字节<br/>M表示长度<br/>D表示小数位数 | 依赖于M和D的值<br/>例如：DOUBLE(5,2)<br/>范围：[-999.99,999.99] |              | 双精度浮点数 |
 | DECIMAL(M,D) | 8字节<br/>M表示长度<br/>D表示小数位数 | 依赖于M和D的值，但M的上限为65<br/>例如：DOUBLE(5,2)<br/>范围：[-999.99,999.99] |              |     小数     |
 
-(2) 日期类型
+### 7.1.2 日期类型
 
 |   类型    | 大小(字节) |                   范围                    |         格式         |            用途             |
 | :-------: | :--------: | :---------------------------------------: | :------------------: | :-------------------------: |
@@ -282,7 +332,7 @@ https://www.macwk.com/soft/navicat-premium/
 | DATETIME  |     8      | [1000-01-01 00:00:00,9999-12-31 23:59:59] | YYYY-MM-DD  HH:MM:SS |         日期和时间          |
 | TIMESTAMP |     4      |                [0,2^31^-1]                |         INT          | 距1970-01-01 00:00:00的秒数 |
 
-(3) 字符串类型
+### 7.1.3 字符串类型
 
 |            类型            | 大小(字节) |       用途       |
 | :------------------------: | :--------: | :--------------: |
@@ -291,55 +341,56 @@ https://www.macwk.com/soft/navicat-premium/
 | BLOB (binary large object) | 0~2^16^-1  | 二进制形式长文本 |
 |            TEXT            | 0~2^16^-1  |    长文本数据    |
 
-- CHAR和VARCHAR
-  - 保存和检索的方式不同
-  - 最大长度和尾部是否留空不同
-  - 存储和检索过程中均不进行大小写转换
-- BLOB
-  - 二进制大对象，可容纳可变长度的数据
-  - 具体有四种BLOB类型：TINYBLOB、BLOB、MEDIUMBLOB、LONGBLOB，对应不同的可容纳长度
+> **CHAR和VARCHAR的区别**
 
-## 7.2 约束
+- 保存和检索的方式不同
+- 最大长度和尾部是否留空不同
+- 存储和检索过程中均不进行大小写转换
 
-> 表中的一行数据代表一个实体(entity)，表中的一列数据代表实体的一个属性(attribute)。
+> **BLOB详细介绍**
+
+- 二进制大对象，可容纳可变长度的数据
+- 具体有四种BLOB类型：TINYBLOB、BLOB、MEDIUMBLOB、LONGBLOB，对应不同的可容纳长度
+
+## 7.2 约束条件
 
 ### 7.2.1 实体完整性约束
 
-> 实体完整性的作用是标识每个实体的唯一性。
+实体完整性的作用是标识每个实体的唯一性。
 
-#### (1) 主键约束
+> **主键约束 (PRIMARY KEY)**
 
-> `PRIMARY KEY`，标识表中的每个实体该属性需要互不相同、且不能为空。
+标识表中每个实体的该属性需要互不相同、且不能为空。
 
-#### (2) 唯一约束
+> **唯一约束 (UNIQUE)**
 
-> `UNIQUE`，标识表中的每个实体该属性需要互不相同，但允许为空。
+标识表中每个实体的该属性需要互不相同，但允许为空。
 
-#### (3) 自动增长
+> **自动增长 (AUTO_INCREMENT)**
 
-> `AUTO_INCREMENT`，可以给主键数值列添加该标签，从1开始，每次加1。
->
-> 该标签不能单独使用，必须和有主键的数值列配合使用。
+可以给主键数值列添加该标签，从1开始，每次加1。
+
+该标签不能单独使用，必须和有主键的数值列配合使用。
 
 ### 7.2.2 域完整性约束
 
-> 域完整性的作用是约束实体某个属性的正确性。
+域完整性的作用是约束实体某个属性的正确性。
 
-#### (1) 非空约束
+> **非空约束 (NOT NULL)**
 
-> `NOT NULL`，标识表中的每个实体该属性需要不为空。
+标识表中每个实体的该属性需要不为空。
 
-#### (2) 默认值约束
+> **默认值约束 (DEFAULT)**
 
-> `DEFAULT`，为属性赋予默认值，当新增数据不指定该属性值而是指定为“DEFAULT”时，用设置的默认值替代。
+为属性赋予默认值，当新增数据不指定该属性值而是指定为“DEFAULT”时，用设置的默认值替代。
 
-#### (3) 引用完整性约束
+> **引用完整性约束 (FOREIGN KEY)**
 
-> - 语法：`CONSTRAINT fk_从表名_列名 FOREIGN KEY(引用列名) REFRENCES 主表名(被引用列名)`
-> - 意义：FOREIGN KEY引用外部表的某一列，新增数据时，约束此属性值必须为外部表被引用的列中存在的值。
-> - 注意：
->   - 若两张表存在引用关系，**在创建从表(引用表)之前，必须先创建主表(被引用表)**。
->   - 若两张表存在引用关系，**在删除主表(被引用表)之前，必须先删除从表(引用表)**。
+- 语法：`CONSTRAINT fk_从表名_列名 FOREIGN KEY(引用列名) REFRENCES 主表名(被引用列名)`
+- 意义：FOREIGN KEY引用外部表的某一列，新增数据时，约束此属性值必须为外部表被引用的列中存在的值。
+- 注意：若两张表存在引用关系时
+  - **在创建从表(引用表)之前，必须先创建主表(被引用表)**。
+  - **在删除主表(被引用表)之前，必须先删除从表(引用表)。**
 
 
 
@@ -347,56 +398,101 @@ https://www.macwk.com/soft/navicat-premium/
 
 # 八、数据表操作
 
+> 一个数据库里可包含多个数据表，对数据表可以进行创建、修改、删除的操作。
+
 ## 8.1 数据表创建 (CREATE)
 
-> 语法
+> **语法**
 
 ```sql
-create table 表名 (
+CREATE TABLE 表名 (
     列名 数据类型 [约束],
     列名 数据类型 [约束],
     ...
     列名 数据类型 [约束]	// 最后一列的末尾不允许加逗号
-) [charset=utf8]		 // 可根据需要指定表的某些属性
+) [CHARSET=utf8];		 // 可根据需要指定表的某些属性
 ```
 
-> 表格1 Class
+> **创建Class数据表**
 
-|    列名    |  数据类型   |      约束      |   说明   |
-| :--------: | :---------: | :------------: | :------: |
-|  class_id  |     INT     | 主键、自动增长 | 班级编号 |
-| class_name | VARCHAR(20) |   唯一、非空   | 班级名称 |
+|   列名    |  数据类型   |      约束      |   说明   |
+| :-------: | :---------: | :------------: | :------: |
+|  classId  |     INT     | 主键、自动增长 | 班级编号 |
+| className | VARCHAR(20) |   唯一、非空   | 班级名称 |
 
 ```sql
-CREATE TABLE class(
-	class_id INT PRIMARY KEY AUTO_INCREMENT,
-	class_name VARCHAR(20) NOT NULL
-)CHARSET=utf8;
+CREATE TABLE Class (
+	classId INT PRIMARY KEY AUTO_INCREMENT,
+	className VARCHAR(20) UNIQUE NOT NULL
+)CHARSET=UTF8;
 ```
 
-> 表格2 Student
+> **创建Student数据表**
 
-|     列名     |  数据类型   |                 约束                  | 说明 |
-| :----------: | :---------: | :-----------------------------------: | :--: |
-|  student_id  |     INT     |            主键、自动增长             | 学号 |
-| student_name | VARCHAR(20) |                 非空                  | 姓名 |
-|     sex      |   CHAR(2)   |           非空、默认为“男”            | 性别 |
-|  born_date   |    DATE     |                 非空                  | 生日 |
-|    phone     | VARCHAR(11) |                  无                   | 电话 |
-|   class_id   |     INT     | 非空、外键约束(引用Class表的class_id) | 班级 |
+|    列名     |  数据类型   |                 约束                  | 说明 |
+| :---------: | :---------: | :-----------------------------------: | :--: |
+|  studentId  |     INT     |            主键、自动增长             | 学号 |
+| studentName | VARCHAR(20) |                 非空                  | 姓名 |
+|     sex     |   CHAR(2)   |           非空、默认为“男”            | 性别 |
+|  bornDate   |    DATE     |                 非空                  | 生日 |
+|    phone    | VARCHAR(11) |                  无                   | 电话 |
+|   classId   |     INT     | 非空、外键约束(引用Class表的class_id) | 班级 |
 
 ```sql
-CREATE TABLE student(
-	student_id INT PRIMARY KEY AUTO_INCREMENT,
-	studnet_name VARCHAR(20) NOT NULL,
+CREATE TABLE Student (
+	studentId INT PRIMARY KEY AUTO_INCREMENT,
+	studentName VARCHAR(20) NOT NULL,
 	sex CHAR(1) NOT NULL DEFAULT '男',
-	born_date DATE NOT NULL,
+	bornDate DATE NOT NULL,
 	phone VARCHAR(11),
-	class_id INT NOT NULL,
-	CONSTRAINT fk_student_class_id FOREIGN KEY(class_id) REFERENCES class(class_id)
-)CHARSET=utf8;
+	classId INT NOT NULL,
+	CONSTRAINT fk_Student_classId FOREIGN KEY(classId) REFERENCES Class(classId)
+)CHARSET=UTF8;
 ```
 
 ## 8.2 数据表修改 (ALTER)
 
+> **向表中添加列 (ADD)**
+
+```mysql
+ALTER TABLE 表名 ADD 列名 数据类型 [约束]；
+```
+
+注意：
+
+- **若表中没有数据，在添加列时加上任意约束都是可行的。**
+- **若表中已有数据，在添加列时不能加上会与已有数据产生冲突的约束。**
+
+> **修改表中的列 (MODIFY)**
+
+```mysql
+ALTER TABLE 表名 MODIFY 列名 数据类型 [约束];
+```
+
+注意：**修改表中某列时，要写全列的名称、数据类型和约束条件。**
+
+> **删除表中的列 (DROP)**
+
+```mysql
+ALTER TABLE 表名 DROP 列名;
+```
+
+注意：**删除列时，每次只能删除一列。**
+
+> **修改列名 (CHANGE)**
+
+```mysql
+ALTER TABLE 表名 CHANGE 列名 新列名 数据类型 [约束]。
+```
+
+> **修改表名 (RENAME)**
+
+```mysql
+ALTER TABLE 表名 RENAME 新表名;
+```
+
 ## 8.3 数据表删除 (DROP)
+
+```mysql
+DROP TABLE 表名;
+```
