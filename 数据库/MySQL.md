@@ -496,3 +496,184 @@ ALTER TABLE 表名 RENAME 新表名;
 ```mysql
 DROP TABLE 表名;
 ```
+
+# 九、数据查询【重点】
+
+## 9.1 基本结构
+
+> - 关系型数据库中的数据以表格的形式进行数据存储，表格由行、和列组成。
+> - 每一行代表一个实体
+> - 每一列代表实体的一个属性
+
+**注意：对数据表执行查询语句时，返回的结果是一张临时虚拟表**
+
+## 9.2 基本查询
+
+> **SELECT 列名 FROM 表名**
+
+| 关键字 | 描述           |
+| ------ | -------------- |
+| SELECT | 指定要查询的列 |
+| FROM   | 指定要查询的表 |
+
+### 9.2.1 查询部分列
+
+```mysql
+SELECT 列名1,列名2,... FROM 表名;
+```
+
+### 9.2.2 查询所有列
+
+```mysql
+SELECT 所有列的列名 FROM 表名;
+```
+
+```mysql
+SELECT * FROM 表名;
+```
+
+**注意：生产环境下，优先使用列名查询，因为使用"*"的方式需要转换，其效率低、可读性差。**
+
+### 9.2.3 列的运算
+
+| 算术运算符 | 描述           |
+| ---------- | -------------- |
+| +          | 两列做加法运算 |
+| -          | 两列做减法运算 |
+| *          | 两列做乘法运算 |
+| /          | 两列做除法运算 |
+
+**注意：**
+
+- **在mysql中，%是占位符，而非取模运算符。**
+- **在查询过程中进行的运算，不会影响原表格数据。**
+
+### 9.2.4 列的别名
+
+```mysql
+# 从表中查询员工的编号、名字、年薪并修改别名
+SELECT id AS "编号", name AS "名字", salary*12 AS "年薪" 
+FROM t_employees;
+```
+
+### 9.2.5 结果去重
+
+```mysql
+# 查询员工表中所有经理的id
+SELECT DISTINCT managerId FROM t_employees;
+```
+
+## 9.3 排序查询
+
+> SELECT 列名 FROM 表名 **ORDER BY 列名 [规则]**
+
+| 排序规则 | 描述符 |
+| -------- | ------ |
+| ASC      | 升序   |
+| DESC     | 降序   |
+
+### 9.3.1 单列排序
+
+```mysql
+# 查询员工ID、薪资，按工资升序排序
+SELECT id, salary 
+FROM t_employees 
+ORDER BY salary ASC;
+```
+
+### 9.3.2 多列排序
+
+```mysql
+# 查询员工id、薪资，先按工资将序、再按id升序
+SELECT id, salary 
+FROM t_employees 
+ORDER BY salary DESC, id ASC;
+```
+
+## 9.4 条件查询
+
+> SELECT 列名 FROM 表名 **WHERE 条件**
+
+| 关键字 | 描述                                 |
+| ------ | ------------------------------------ |
+| WHERE  | 在查询结果中，筛选符合条件的进行展示 |
+| 条件   | 布尔表达式                           |
+
+> **等值判断 (=)**
+
+```mysql
+SELECET * FROM t_employees 
+WHERE id=100;
+```
+
+**注意：与java等语音不同，mysql中使用"="进行逻辑判断。**
+
+> **不等值判断 (>, <, >=, <=, !=, <>)**
+
+**注意：mysql中"!="和"<>"都表示不等于，两者具有相同的效果。**
+
+> **区间查询 (BETEWEEN A AND B)**
+
+```mysql
+SELECT * FROM t_employees
+WHERE salary BETWEEN 10000 AND 20000;
+```
+
+**注意：使用BETWEEN A AND B时，A的值必须小于B的值，否则返回为空。**
+
+> **逻辑判断 (AND, OR, NOT)**
+
+```mysql
+SELECT * FROM t_employees
+WHERE salary>10000 AND salary<20000;
+```
+
+**注意：其与BETWEEEN A AND B是有区别的，后者是一条逻辑，而前者是两条逻辑。**
+
+>  **空值判断 (IS NULL, IS NOT NULL)**
+
+```mysql
+SELECT * FROM t_employees
+WHERE managerId IS NULL;
+```
+
+> **枚举查询 (IN)**
+
+```mysql
+SELECT * FROM t_employees
+WHERE managerId in (70,80,90);
+```
+
+**注意：相比于OR，枚举查询的效率较低，所以是否使用需根据实际情况而定。**
+
+> **模糊查询 (LIKE)**
+
+```mysql
+# 查询表中姓张、且名字为三个字的人
+SELECT * FROM t_employees
+WHERE name LIKE "张__";
+
+# 查询表中名字以“张”开头的人
+SELECT * FROM t_employees
+WHERE name LIKE "张%";
+```
+
+**注意："_"匹配任意单个字符，"%"匹配任意长度字符。**
+
+> **分支查询 (CASE)**
+
+```mysql
+SELECT * FROM t_employees
+CASE
+	WHEN salary>=20000 THEN "A"
+	WHEN salary>=10000 AND salary<20000 THEN "B"
+	ELSE "C"
+END AS "level"
+FROM t_employees;
+```
+
+**注意：**
+
+- "CASE"语句会产生一新列，默认列名为语句内部内容，所以通常在"END"之后为其设置别名。
+- "ELSE"为可选项，视需求决定是否有该逻辑。
+
