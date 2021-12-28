@@ -114,7 +114,7 @@ https://dev.mysql.com/downloads/mysql/
 >
 > 在“系统偏好设置”中看到MySQL图标，表明安装成功。
 
-![image-20211203102942521](/Users/shaobo/Library/Application Support/typora-user-images/image-20211203102942521.png)
+![image-20211203102942521](https://s2.loli.net/2021/12/28/oZeY71LNDXJunxy.png)
 
 ## 4.4 环境配置
 
@@ -150,7 +150,7 @@ https://dev.mysql.com/downloads/mysql/
 
 出现如下界面则说明登录成功
 
-![image-20211203103909165](/Users/shaobo/Library/Application Support/typora-user-images/image-20211203103909165.png)
+![image-20211203103909165](https://s2.loli.net/2021/12/28/QGkptKcOPLdNDAU.png)
 
 ## 4.5 MySQL服务指令
 
@@ -214,11 +214,11 @@ https://www.macwk.com/soft/navicat-premium/
 
 > **新建连接**
 
-![image-20211203183842532](/Users/shaobo/Library/Application Support/typora-user-images/image-20211203183842532.png)
+![image-20211203183842532](https://s2.loli.net/2021/12/28/VMuIDlPCscgQhvO.png)
 
 > **数据库登录**
 
-![image-20211203183759031](/Users/shaobo/Library/Application Support/typora-user-images/image-20211203183759031.png)
+![image-20211203183759031](https://s2.loli.net/2021/12/28/CshRcBqrjP7awnf.png)
 
 
 
@@ -599,7 +599,7 @@ ORDER BY salary DESC, id ASC;
 | WHERE  | 在查询结果中，筛选符合条件的进行展示 |
 | 条件   | 布尔表达式                           |
 
-> **等值判断 (=)**
+### 9.4.1 等值判断 (=)
 
 ```mysql
 SELECET * FROM t_employees 
@@ -608,11 +608,11 @@ WHERE id=100;
 
 **注意：与java等语音不同，mysql中使用"="进行逻辑判断。**
 
-> **不等值判断 (>, <, >=, <=, !=, <>)**
+### 9.4.2 不等值判断 (>, <, >=, <=, !=, <>)
 
 **注意：mysql中"!="和"<>"都表示不等于，两者具有相同的效果。**
 
-> **区间查询 (BETEWEEN A AND B)**
+### 9.4.3 区间查询 (BETEWEEN A AND B)
 
 ```mysql
 SELECT * FROM t_employees
@@ -621,7 +621,7 @@ WHERE salary BETWEEN 10000 AND 20000;
 
 **注意：使用BETWEEN A AND B时，A的值必须小于B的值，否则返回为空。**
 
-> **逻辑判断 (AND, OR, NOT)**
+### 9.4.4 逻辑判断 (AND, OR, NOT)
 
 ```mysql
 SELECT * FROM t_employees
@@ -630,14 +630,14 @@ WHERE salary>10000 AND salary<20000;
 
 **注意：其与BETWEEEN A AND B是有区别的，后者是一条逻辑，而前者是两条逻辑。**
 
->  **空值判断 (IS NULL, IS NOT NULL)**
+### 9.4.5 空值判断 (IS NULL, IS NOT NULL)
 
 ```mysql
 SELECT * FROM t_employees
 WHERE managerId IS NULL;
 ```
 
-> **枚举查询 (IN)**
+### 9.4.6 枚举查询 (IN)
 
 ```mysql
 SELECT * FROM t_employees
@@ -646,7 +646,7 @@ WHERE managerId in (70,80,90);
 
 **注意：相比于OR，枚举查询的效率较低，所以是否使用需根据实际情况而定。**
 
-> **模糊查询 (LIKE)**
+### 9.4.7模糊查询 (LIKE)
 
 ```mysql
 # 查询表中姓张、且名字为三个字的人
@@ -660,15 +660,15 @@ WHERE name LIKE "张%";
 
 **注意："_"匹配任意单个字符，"%"匹配任意长度字符。**
 
-> **分支查询 (CASE)**
+### 9.4.8 分支查询 (CASE)
 
 ```mysql
-SELECT * FROM t_employees
-CASE
-	WHEN salary>=20000 THEN "A"
-	WHEN salary>=10000 AND salary<20000 THEN "B"
-	ELSE "C"
-END AS "level"
+SELECT *
+  CASE
+    WHEN salary>=20000 THEN "A"
+    WHEN salary>=10000 AND salary<20000 THEN "B"
+    ELSE "C"
+  END AS "salaryLevel"
 FROM t_employees;
 ```
 
@@ -676,4 +676,156 @@ FROM t_employees;
 
 - "CASE"语句会产生一新列，默认列名为语句内部内容，所以通常在"END"之后为其设置别名。
 - "ELSE"为可选项，视需求决定是否有该逻辑。
+
+## 9.5 时间查询
+
+> SELECT [时间函数(参数列表)]()
+
+- 查询结果：执行时间查询函数，会返回一行一列的虚表格
+
+| 函数                  | 描述                                  |
+| --------------------- | ------------------------------------- |
+| SYSDATE()             | 获取当前系统时间(YYYY-MM-DD hh:mm:ss) |
+| CURDATE()             | 获取当前日期(YYYY-MM-DD)              |
+| CURTIME()             | 获取当前时间(hh:mm:ss)                |
+| WEEK(DATE)            | 获取指定日期为一年中的第几周          |
+| YEAR(DATE)            | 获取指定日期的年份                    |
+| HOUR(TIME)            | 获取指定时间的小时数                  |
+| MINUTE(TIME)          | 获取指定时间的分钟数                  |
+| DATEDIFF(DATE1,DATE2) | 获取两个日期间隔的天数                |
+| ADDDATE(DATE,N)       | 计算DATE加上N天后的日期               |
+
+## 9.6 字符串查询
+
+> SELECT [字符串函数(参数)]()
+
+| 函数                        | 描述                                         |
+| --------------------------- | -------------------------------------------- |
+| CONCAT(str1,str2,...)       | 将多个字符串拼接                             |
+| INSERT(str,pos,len,new_str) | 将str中pos位置开始len长度的内容替换为new_str |
+| LOWER(str)                  | 将指定字符串转换为小写                       |
+| UPPER(str)                  | 将指定字符串转换为大写                       |
+| SUBSTRING(str,pos,len)      | 将str中pos位置开始截取len长度的内容          |
+
+> 应用
+
+```mysql
+# 字符串拼接
+SELECT CONCAT(firstName,' ',lastName) AS 'fullName'
+FROM t_employees;
+
+# 字符串替换
+SELECT INSERT('这是一个数据库',3,2,'MySQL') # 这是MySQL数据库
+
+# 子字符串截取
+SELECT SUBSTRING('JavaMySQLOracle',5,5) # MySQL
+```
+
+- **注意：MySQL中字符串的下标从1开始。**
+
+## 9.7 聚合函数
+
+> SELECT [聚合函数(列名)]() FROM 表名
+
+| 函数        | 描述                   |
+| ----------- | ---------------------- |
+| SUM(列名)   | 指定列所有数据的总和   |
+| AVG(列名)   | 指定列所有数据的平均值 |
+| MAX(列名)   | 指定列所有数据的最大值 |
+| MIN(列名)   | 指定列所有数据的最小值 |
+| COUNT(列名) | 指定列所有数据的行数   |
+
+> 应用
+
+```mysql
+# 统计员工总人数
+SELECT COUNT(employeeId) FROM t_employees;
+
+# 统计有提成的员工人数
+SELECT COUNT(commissionPct) FROM t_employees;
+```
+
+- **注意：聚合函数会自动忽略null值，不进行统计**
+
+## 9.8 分组函数
+
+> SELECT 列名 FROM 表名 WHERE 条件 **GROUP BY 列名**
+
+| 关键字   | 说明                          |
+| -------- | ----------------------------- |
+| GROUP BY | GROUP BY必须写在WHERE条件之后 |
+
+> 应用
+
+```mysql
+# 统计各部门人数
+SELECT departmenId, COUNT(employeeId)
+FROM t_employees
+GROUP BY departmentId;
+	
+# 查询各部门、各岗位员工的平均工资
+SELECT departmentId, jobId, AVG(salary)
+FROM t_employees
+GROUP BY departmentId, jobId;
+```
+
+- **注意：分组查询中，select显示的列只能是分组依据列、或聚合函数列，不能出现其他列。**
+
+## 9.9 分组过滤查询
+
+> SELECT 列名 FROM 表名 WHERE 条件 GROUP BY 列名 **HAVING 条件**
+
+| 关键字 | 说明                       |
+| ------ | -------------------------- |
+| HAVING | HAVING必须写在GROUP BY之后 |
+
+> 应用
+
+```mysql
+# 统计部门编号5的员工的最大薪资
+SELECT departmenId, MAX(salary)
+FROM t_employees
+GROUP BY departmentId
+HAVING departmentId=5;
+```
+
+## 9.10 限定查询
+
+> SELECT 列名 FROM 表名 LIMIT **起始行, 查询行数**
+
+| 关键字                        | 说明                                        |
+| ----------------------------- | ------------------------------------------- |
+| LIMIT offset_start, row_count | offset_start 起始行<br />row_count 查询行数 |
+
+- **注意：起始行编号从0开始。**
+
+## 9.11 查询总结
+
+### 9.11.1 SQL语句编写顺序
+
+```mysql
+SELECT 列名
+FROM 表名
+WHERE 判断条件
+GROUP BY 分组列名
+HAVING 过滤条件
+ORDER BY 排序规则
+LIMIT 起始行,查询行数
+```
+
+
+
+### 9.11.2 SQL语句执行顺序
+
+```mysql
+FROM			指定数据表
+WHERE			按条件过滤数据
+GROUP BY	对查询结果分组
+HAVING		对分组后的数据过滤
+SELECT		按列名筛选
+ORDER BY	排序
+LIMIT			限定查询结果所在行
+```
+
+
 
