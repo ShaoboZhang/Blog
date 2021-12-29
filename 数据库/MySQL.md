@@ -497,9 +497,41 @@ ALTER TABLE 表名 RENAME 新表名;
 DROP TABLE 表名;
 ```
 
-# 九、数据查询【重点】
+------
 
-## 9.1 基本结构
+# 九、DML操作【重点】
+
+> DML(Database Manuplation Language): 数据操纵语言，包括Insert、Update、Delete
+
+## 9.1 新增 (Insert)
+
+> [INSERT INTO]() 表名(列1, 列2, ...) [VALUES]()(值1, 值2, ...)
+
+**注意：在新增数据时，表名后的列名和VALUES里的值要一一对应（个数、顺序、类型）**
+
+## 9.2 修改 (Update)
+
+> [UPDATE]() 表名 [SET]() 列1=值1, 列2=值2, ... WHERE 条件;
+
+**注意：在修改数据时，绝大多数情况下都需要加WHERE条件，否则将为整个表格更新数据。**
+
+## 9.3 删除 (Delete)
+
+> [DELETE]() FROM 表名 WHERE 条件;
+
+**注意：在删除数据时，若不加WHERE，则将整个表格的数据都删除。**
+
+## 9.4 清空 (TRUNCATE)
+
+> [TRUNCATE TABLE]() 表名;
+
+**注意：与DELETE不加WHERE不同，TRUNCATE是把表格销毁、再按照原表的格式创建一张新表。**
+
+------
+
+# 十、数据查询【重点】
+
+## 10.1 基本结构
 
 > - 关系型数据库中的数据以表格的形式进行数据存储，表格由行、和列组成。
 > - 每一行代表一个实体
@@ -507,7 +539,7 @@ DROP TABLE 表名;
 
 **注意：对数据表执行查询语句时，返回的结果是一张临时虚拟表**
 
-## 9.2 基本查询
+## 10.2 基本查询
 
 > **SELECT 列名 FROM 表名**
 
@@ -516,13 +548,13 @@ DROP TABLE 表名;
 | SELECT | 指定要查询的列 |
 | FROM   | 指定要查询的表 |
 
-### 9.2.1 查询部分列
+### 10.2.1 查询部分列
 
 ```mysql
 SELECT 列名1,列名2,... FROM 表名;
 ```
 
-### 9.2.2 查询所有列
+### 10.2.2 查询所有列
 
 ```mysql
 SELECT 所有列的列名 FROM 表名;
@@ -534,7 +566,7 @@ SELECT * FROM 表名;
 
 **注意：生产环境下，优先使用列名查询，因为使用"*"的方式需要转换，其效率低、可读性差。**
 
-### 9.2.3 列的运算
+### 10.2.3 列的运算
 
 | 算术运算符 | 描述           |
 | ---------- | -------------- |
@@ -548,7 +580,7 @@ SELECT * FROM 表名;
 - **在mysql中，%是占位符，而非取模运算符。**
 - **在查询过程中进行的运算，不会影响原表格数据。**
 
-### 9.2.4 列的别名
+### 10.2.4 列的别名
 
 ```mysql
 # 从表中查询员工的编号、名字、年薪并修改别名
@@ -556,14 +588,14 @@ SELECT id AS "编号", name AS "名字", salary*12 AS "年薪"
 FROM t_employees;
 ```
 
-### 9.2.5 结果去重
+### 10.2.5 结果去重
 
 ```mysql
 # 查询员工表中所有经理的id
 SELECT DISTINCT managerId FROM t_employees;
 ```
 
-## 9.3 排序查询
+## 10.3 排序查询
 
 > SELECT 列名 FROM 表名 **ORDER BY 列名 [规则]**
 
@@ -572,7 +604,7 @@ SELECT DISTINCT managerId FROM t_employees;
 | ASC      | 升序   |
 | DESC     | 降序   |
 
-### 9.3.1 单列排序
+### 10.3.1 单列排序
 
 ```mysql
 # 查询员工ID、薪资，按工资升序排序
@@ -581,7 +613,7 @@ FROM t_employees
 ORDER BY salary ASC;
 ```
 
-### 9.3.2 多列排序
+### 10.3.2 多列排序
 
 ```mysql
 # 查询员工id、薪资，先按工资将序、再按id升序
@@ -590,7 +622,7 @@ FROM t_employees
 ORDER BY salary DESC, id ASC;
 ```
 
-## 9.4 条件查询
+## 10.4 条件查询
 
 > SELECT 列名 FROM 表名 **WHERE 条件**
 
@@ -599,7 +631,7 @@ ORDER BY salary DESC, id ASC;
 | WHERE  | 在查询结果中，筛选符合条件的进行展示 |
 | 条件   | 布尔表达式                           |
 
-### 9.4.1 等值判断 (=)
+### 10.4.1 等值判断 (=)
 
 ```mysql
 SELECET * FROM t_employees 
@@ -608,11 +640,11 @@ WHERE id=100;
 
 **注意：与java等语音不同，mysql中使用"="进行逻辑判断。**
 
-### 9.4.2 不等值判断 (>, <, >=, <=, !=, <>)
+### 10.4.2 不等值判断 (>, <, >=, <=, !=, <>)
 
 **注意：mysql中"!="和"<>"都表示不等于，两者具有相同的效果。**
 
-### 9.4.3 区间查询 (BETEWEEN A AND B)
+### 10.4.3 区间查询 (BETEWEEN A AND B)
 
 ```mysql
 SELECT * FROM t_employees
@@ -621,7 +653,7 @@ WHERE salary BETWEEN 10000 AND 20000;
 
 **注意：使用BETWEEN A AND B时，A的值必须小于B的值，否则返回为空。**
 
-### 9.4.4 逻辑判断 (AND, OR, NOT)
+### 10.4.4 逻辑判断 (AND, OR, NOT)
 
 ```mysql
 SELECT * FROM t_employees
@@ -630,14 +662,14 @@ WHERE salary>10000 AND salary<20000;
 
 **注意：其与BETWEEEN A AND B是有区别的，后者是一条逻辑，而前者是两条逻辑。**
 
-### 9.4.5 空值判断 (IS NULL, IS NOT NULL)
+### 10.4.5 空值判断 (IS NULL, IS NOT NULL)
 
 ```mysql
 SELECT * FROM t_employees
 WHERE managerId IS NULL;
 ```
 
-### 9.4.6 枚举查询 (IN)
+### 10.4.6 枚举查询 (IN)
 
 ```mysql
 SELECT * FROM t_employees
@@ -646,7 +678,7 @@ WHERE managerId in (70,80,90);
 
 **注意：相比于OR，枚举查询的效率较低，所以是否使用需根据实际情况而定。**
 
-### 9.4.7模糊查询 (LIKE)
+### 10.4.7模糊查询 (LIKE)
 
 ```mysql
 # 查询表中姓张、且名字为三个字的人
@@ -660,7 +692,7 @@ WHERE name LIKE "张%";
 
 **注意："_"匹配任意单个字符，"%"匹配任意长度字符。**
 
-### 9.4.8 分支查询 (CASE)
+### 10.4.8 分支查询 (CASE)
 
 ```mysql
 SELECT *
@@ -677,7 +709,7 @@ FROM t_employees;
 - "CASE"语句会产生一新列，默认列名为语句内部内容，所以通常在"END"之后为其设置别名。
 - "ELSE"为可选项，视需求决定是否有该逻辑。
 
-## 9.5 时间查询
+## 10.5 时间查询
 
 > SELECT [时间函数(参数列表)]()
 
@@ -695,7 +727,7 @@ FROM t_employees;
 | DATEDIFF(DATE1,DATE2) | 获取两个日期间隔的天数                |
 | ADDDATE(DATE,N)       | 计算DATE加上N天后的日期               |
 
-## 9.6 字符串查询
+## 10.6 字符串查询
 
 > SELECT [字符串函数(参数)]()
 
@@ -706,8 +738,6 @@ FROM t_employees;
 | LOWER(str)                  | 将指定字符串转换为小写                       |
 | UPPER(str)                  | 将指定字符串转换为大写                       |
 | SUBSTRING(str,pos,len)      | 将str中pos位置开始截取len长度的内容          |
-
-> 应用
 
 ```mysql
 # 字符串拼接
@@ -723,7 +753,7 @@ SELECT SUBSTRING('JavaMySQLOracle',5,5) # MySQL
 
 - **注意：MySQL中字符串的下标从1开始。**
 
-## 9.7 聚合函数
+## 10.7 聚合函数
 
 > SELECT [聚合函数(列名)]() FROM 表名
 
@@ -735,8 +765,6 @@ SELECT SUBSTRING('JavaMySQLOracle',5,5) # MySQL
 | MIN(列名)   | 指定列所有数据的最小值 |
 | COUNT(列名) | 指定列所有数据的行数   |
 
-> 应用
-
 ```mysql
 # 统计员工总人数
 SELECT COUNT(employeeId) FROM t_employees;
@@ -747,15 +775,13 @@ SELECT COUNT(commissionPct) FROM t_employees;
 
 - **注意：聚合函数会自动忽略null值，不进行统计**
 
-## 9.8 分组函数
+## 10.8 分组函数
 
 > SELECT 列名 FROM 表名 WHERE 条件 **GROUP BY 列名**
 
 | 关键字   | 说明                          |
 | -------- | ----------------------------- |
 | GROUP BY | GROUP BY必须写在WHERE条件之后 |
-
-> 应用
 
 ```mysql
 # 统计各部门人数
@@ -771,15 +797,13 @@ GROUP BY departmentId, jobId;
 
 - **注意：分组查询中，select显示的列只能是分组依据列、或聚合函数列，不能出现其他列。**
 
-## 9.9 分组过滤查询
+## 10.9 分组过滤查询
 
 > SELECT 列名 FROM 表名 WHERE 条件 GROUP BY 列名 **HAVING 条件**
 
 | 关键字 | 说明                       |
 | ------ | -------------------------- |
 | HAVING | HAVING必须写在GROUP BY之后 |
-
-> 应用
 
 ```mysql
 # 统计部门编号5的员工的最大薪资
@@ -789,7 +813,7 @@ GROUP BY departmentId
 HAVING departmentId=5;
 ```
 
-## 9.10 限定查询
+## 10.10 限定查询
 
 > SELECT 列名 FROM 表名 LIMIT **起始行, 查询行数**
 
@@ -799,9 +823,9 @@ HAVING departmentId=5;
 
 - **注意：起始行编号从0开始。**
 
-## 9.11 查询总结
+## 10.11 查询总结
 
-### 9.11.1 SQL语句编写顺序
+### 10.11.1 SQL语句编写顺序
 
 ```mysql
 SELECT 列名
@@ -815,7 +839,7 @@ LIMIT 起始行,查询行数
 
 
 
-### 9.11.2 SQL语句执行顺序
+### 10.11.2 SQL语句执行顺序
 
 ```mysql
 FROM			指定数据表
@@ -828,4 +852,113 @@ LIMIT			限定查询结果所在行
 ```
 
 
+
+# 十一、高级查询
+
+## 11.1 子查询
+
+### 11.1.1 查询结果用作等值/不等值判断(单行单列)
+
+> SELECT 列名 FROM 表名 WHERE 等值/不等值判断
+
+- **说明：当子查询的结果是单行单列时，可用作外部查询的等值或不等值判断条件进行二次查询。**
+
+```mysql
+# 查询工资比Bruce高的员工情况
+SELECT * FROM t_employees 
+WHERE (SELECT salary FROM t_employees WHERE firstName='Bruce');
+```
+
+
+
+### 11.1.2 查询结果用作枚举判断(多行单列)
+
+> SELECT 列名 FROM 表名 WHERE 枚举判断
+
+- **说明：当子查询的结果是多行单列时，可用作外部查询的等值或不等值判断条件进行二次查询。**
+
+```mysql
+# 查询姓氏为James的员工所在部门情况
+SELECT * FROM t_employees
+WHERE departmentId in (SELECT departmentId FROM t_employees WHERE lastNAME='James');
+```
+
+
+
+### 11.1.3 查询结果用作临时表(多行多列)
+
+> SELECT 列名 FROM (子查询结果)
+
+- **说明：当子查询的结果是多行多列时，可用作临时表进行二次查询。**
+- **注意：当子查询的结果作为临时表时，需要为其赋予一个临时表名。**
+
+## 11.2 合并查询
+
+> 两次查询的结果列数相同时，可通过**UNION**或**UNION ALL**将结果合并展示
+
+注意：
+
+- 被合并的两张表只需要列数相同，数据类型可以不同。
+- 返回的结果列名是第一张表的列名；第二张表的查询结果会接在第一张表的查询结果之后。
+- 通过UNION合并的结果，重复数据只保留一次；通过UNION ALL合并的结果，重复数据都将被保留。
+
+## 11.3 表连接查询
+
+> SELECT 列名 FROM 表1 [连接方式]() 表2 [ON 连接条件]()
+
+### 11.3.1 内连接查询 (INNER JOIN ON)
+
+```mysql
+# 查询所有员工信息及其职位信息 (SQL标准)
+SELECT * FROM t_employees
+INNER JOIN t_jobs
+ON t_employees.jobId=t_jobs.jobId;
+
+# 查询所有员工信息及其部门信息 (MYSQL标准)
+SELECT * FROM t_employees,t_jobs
+WHERE t_employees.jobId=t_jobs.jobId;
+```
+
+​	注意：
+
+- 在使用INNER JOIN时，若不指定连接条件，则将会以**全组合(笛卡尔积)**的方式返回查询结果。
+- 使用INNER JOIN进行内连接查询的方式符合SQL标准，可在其他关系型数据库中通用。
+- 第二种查询方式为MySQL特有的方式，在其他数据库中不支持。
+
+### 11.3.2 左外连接
+
+ ```mysql
+ # 查询员工信息及其部门名称，若员工没有部门则用null填充
+ SELECT e.employeeId,e.firstName,e.salary,d.departmentName
+ FROM t_employees e
+ LEFT JOIN t_departments d
+ ON e.departmentId=d.departmentId;
+ ```
+
+​	注意：
+
+- 进行LEFT JOIN时，以左表为主表，向右表匹配。
+- 若连接条件在右表中不存在时，则用NULL填充右表的查询信息。
+
+### 11.3.3 右外连接
+
+```mysql
+# 查询员工信息及其部门名称，若部门没有员工则用null填充
+SELECT e.employeeId,e.firstName,e.salary,d.departmentName
+FROM t_employees e
+RIGHT JOIN t_departments d
+ON e.departmentId=d.departmentId;
+```
+
+​	注意：
+
+- 进行RIGHT JOIN时，以右表为主表，向左表匹配。
+- 若连接条件在左表中不存在时，则用NULL填充左表的查询信息。
+
+### 11.3.4 总结
+
+- 在选择列名时，若列名存在于多张表中，则需通过```表名.列名```的形式进行选择。
+- 若列名只存在于一张表中，则可直接通过列名进行选择。
+- 可为表名添加临时别名，便于书写。
+- 进行连接查询时，可叠加使用，进而实现多表连接查询。
 
