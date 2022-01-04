@@ -162,22 +162,16 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 package entity;
 
 import lombok.Data;
-
+import lombok.AllArgsConstructor;
 import java.util.Date;
 
 @Data
+@AllArgsConstructor
 public class Student {
     private int id;
     private String name;
     private String gender;
     private Date bornDate;
-
-    public Student(int id, String name, String gender, Date bornDate) {
-        this.id = id;
-        this.name = name;
-        this.gender = gender;
-        this.bornDate = bornDate;
-    }
 }
 ```
 
@@ -232,7 +226,7 @@ public interface StudentMapper {
 - 由于在数据表中，出生日期使用的字段是`born_date`，而实体类中字段是`bornDate`。
 - 因此，在选择字段时不能使用`SELECT *`，需要使用`SELECT id, name, gender, born_date as bornDate`。
 
-## 3.6 注册映射配置文件
+## 3.6 注册映射器
 
 > 在Mybatis配置文件中注册映射文件
 
@@ -645,23 +639,17 @@ password=12345678
 ```java
 package entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-
 import java.util.Date;
 
 @Data
+@AllArgsConstructor
 public class Student {
     private int id;
     private String name;
     private String gender;
     private Date bornDate;
-
-    public Student(int id, String name, String gender, Date bornDate) {
-        this.id = id;
-        this.name = name;
-        this.gender = gender;
-        this.bornDate = bornDate;
-    }
 }
 ```
 
@@ -781,7 +769,7 @@ public interface StudentMapper {
 
 - 例如：在映射`addStudentByAttr`方法时，因为没有通过map型数据传入参数，所以执行语句中使用`arg0,arg1,arg2`传入方法的参数。
 
-## 6.5 注册映射配置文件
+## 6.5 注册映射器
 
 > 已经通过包名指定配置文件路径，因此这一步无需任何操作。
 
@@ -849,20 +837,17 @@ public class Main {
         for (Student student : mapper.getAllStudents()) {
             System.out.println(student);
         }
-
         // 分割线
         System.out.println("-----------------------------------------");
 
         // 修改数据
         student1.setGender("女");
         mapper.updateStudentById(student1);
-
+        System.out.println("修改数据后，表中数据：");
         // 根据id查询数据
         System.out.println("根据id查询结果：" + mapper.getStudentById(1));
-
         // 根据姓名查询学生
         System.out.println("根据姓名查询结果：" + mapper.getStudentByName("张三"));
-
         // 分割线
         System.out.println("-----------------------------------------");
 
@@ -887,3 +872,84 @@ public class Main {
 }
 ```
 
+# 七、通过注解开发
+
+> 通过注解开发和通过映射配置文件开发的区别
+>
+> - 通过注解开发不需要编写映射配置文件
+> - 直接在接口方法上通过注解的方式添加执行语句
+> - 注册映射器时，通过类名或包名指定路径
+>
+> 项目地址：https://gitee.com/shaobo1103/study/tree/master/MyBatis/03-annotation
+
+## 7.1 为接口方法添加注解
+
+```java
+package mapper;
+
+import entity.Student;
+import org.apache.ibatis.annotations.*;
+
+import java.util.Date;
+import java.util.List;
+
+public interface StudentMapper {
+    // 查询所有学生
+    @Select("select * from student")
+    List<Student> getAllStudents();
+
+    // 根据id查询学生
+    @Select("select * from student where id=#{id}")
+    Student getStudentById(int id);
+
+    // 根据姓名查询学生
+    @Select("select * from student where name=#{name}")
+    List<Student> getStudentByName(String name);
+
+    // 通过传入对象新增一个学生
+    @Insert("insert into student (id, name, gender, born_date) values (#{id},#{name},#{gender},#{bornDate})")
+    void addStudentByObj(Student student);
+
+    // 通过传入字段新增一个学生
+    @Insert("insert into student (name, gender, born_date) values (#{name},#{gender},#{born_date})")
+    void addStudentByAttr(@Param("name") String name, @Param("gender") String gender, @Param("born_date") Date bornDate);
+
+    // 根据id删除一个学生
+    @Delete("delete from student where id=#{id}")
+    void deleteStudent(int id);
+
+    // 清空表中所有数据
+    @Delete("truncate student")
+    void deleteAllStudents();
+
+    // 根据id修改学生信息
+    @Update("update student set name=#{name}, gender=#{gender}, born_date=#{bornDate} where id=#{id}")
+    void updateStudentById(Student student);
+}
+```
+
+注意：
+
+- 对于只有一个参数的方法，在执行语句中可以直接用`#{参数名}`的形式。
+- 对于拥有多个参数的方法，需要在方法声明处使用`@Param("参数名")`为其取名，否则在执行语句中，只能使用`#{arg0},#{arg1},...`或`#{param1},,#{param2},...`。
+
+## 7.2 注册映射器
+
+```xml-dtd
+<mappers>
+		<package name="mapper"/>
+</mappers>
+```
+
+说明：因为不存在映射器配置文件了，所以通过使用包名或接口名的方式注册映射器。
+
+## 7.3 总结
+
+> 注解开发的优势
+
+- 简化开发流程
+- 增强了代码可读性
+
+> 注解开发的缺陷
+
+- 无法做到结果映射，因此无法完成复杂的SQL执行逻辑
