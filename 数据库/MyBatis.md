@@ -103,7 +103,7 @@ USE my_test;
 
 # 创建数据表
 CREATE TABLE student (
-    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(10) NOT NULL,
     gender CHAR(1) NOT NULL,
     born_date DATE NOT NULL
