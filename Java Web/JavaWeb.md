@@ -572,7 +572,66 @@ public class ReqServlet extends HttpServlet {
 
 ### 4.2.2 代码实现
 
+> 负责业务处理的Servlet
 
+```java
+package com.shaobo.servlet;
+
+import com.shaobo.entity.User;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Arrays;
+
+@WebServlet(value = {"/a"})
+public class ServletA extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        doPost(req, resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        req.setAttribute("user1", new User("张三", 18, "男", Arrays.asList("唱跳", "rap", "篮球")));
+        req.getRequestDispatcher("/b").forward(req, resp);
+    }
+}
+```
+
+> 负责页面显示的Servlet
+
+```java
+package com.shaobo.servlet;
+
+import com.shaobo.entity.User;
+
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+@WebServlet(value = {"/b"})
+public class ServletB extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        doPost(req, resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        User user1 = (User) req.getAttribute("user1");
+        resp.setContentType("text/html;charset=utf-8");
+        PrintWriter writer = resp.getWriter();
+        writer.println(user1);
+    }
+}
+```
 
 ### 4.2.3 数据传递
 
