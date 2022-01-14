@@ -559,7 +559,7 @@ public class ReqServlet extends HttpServlet {
 
 ## 4.2 转发
 
-> 服务器将请求发给服务器上的其他资源并获取其响应，将响应的结果传递给用户进行显示。
+> 作用在服务器端，服务器将请求发给其上的其他资源，并将其收到的响应结果传递给用户进行显示。
 
 ### 4.2.1 业务逻辑
 
@@ -602,6 +602,10 @@ public class ServletA extends HttpServlet {
 }
 ```
 
+- 通过`setAttribute`方法，以键值对的形式将参数保存到`Request`对象中。
+- 通过`getRequestDispatcher`指定请求转发的URL。
+- 通过`forward`方法，将`Request`和`Response`对象作为参数传递给接收对象。
+
 > 负责页面显示的Servlet
 
 ```java
@@ -633,6 +637,220 @@ public class ServletB extends HttpServlet {
 }
 ```
 
+- 通过`getAttribute`方法，从接收的`Request`对象中获取数据。
+- 通过此处的`Response`对象进行响应页面的展示。
+
 ### 4.2.3 数据传递
 
+- forward: 表示一次请求，是在服务器内部跳转，可共享同一次`request作用域`中的数据。
+- request作用域: 指拥有存储数据的空间，作用范围是一次请求有效（可经过多次转发）。
+  - 可以将数据存入request后，在一次请求过程中的任何位置获取。
+  - 可以传递任何数据（基本数据类型、数组、对象、集合等）。
+
+### 4.2.4 转发的特点
+
+- 转发是服务器行为。
+- 对浏览器而言，只做了一次访问请求，且浏览器访问的地址不变。
+- 两次转发跳转之间传输的信息不会丢失，所以可以通过request进行数据传递。
+- 转发只能将请求转发给同一Web应用中的组件。
+
+## 4.3 重定向
+
+> 重定向作用在客户端，客户端将请求发送给服务器后，服务器响应给客户端一个新的请求地址，客户端向新地址重新发起请求。
+
+### 4.3.1 业务逻辑
+
+![image-20220111103536082](https://s2.loli.net/2022/01/11/9paDlPRTWKrYq3Z.png)
+
+说明：
+
+- Servlet1将重定向的地址通过响应1传给用户，用户再向新地址发起请求。
+- 请求1和请求2的作用域不互通，所以两次请求是不同对象。
+
+### 4.2.2 代码实现
+
+> 负责业务处理的Servlet
+
+```java
+package com.shaobo.servlet;
+
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+@WebServlet(value = {"/c"})
+public class ServletC extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        doPost(req, resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.sendRedirect("/04/b");
+    }
+}
+
+```
+
+- 通过`sendRedirect`方法，指定重定向地址。
+- 重定向的地址需要从根路径开始。
+
+### 4.3.3 数据传递
+
+- sendRedirect跳转时，地址栏改变，代表客户端重新发送的请求，属于两次请求。
+- response没有作用域，所以客户端发起的两次请求无法共享数据。
+  - 若servlet1希望向servlet2传递数据，需要通过URL的拼接实现。
+  - 通过这种方式只能传递字符串对象，且必须以明文形式传递。
+
+### 4.3.4 重定向的特点
+
+- 重定向是客户端行为。
+- 对浏览器而言，做了两次访问请求，浏览器访问的地址改变。
+- 两次跳转之间传输的信息会丢失，所以无法通过request进行数据传递。
+- 重定向可以指向任何资源，包括当前Web应用中的其他资源、或其他站点的资源。
+
+## 4.4 总结
+
+> **当两个Servlet需要传递数据时，通过转发实现，而不要用重定向。**
+
+------
+
+# 五、状态管理
+
+## 5.1 现有问题
+
+- HTTP协议是无状态的，不能保存每次提交的信息。
+- 如果用户发来新的请求，服务器无法知道它是否与之前的请求有联系。
+- 无法减少多次提交相同数据的操作（如: 登录）。
+
+## 5.2 状态管理的概念
+
+> 将浏览器与web服务器之间的多次交互当作整体处理，并将涉及的数据(状态)保存下来。
+
+## 5.3 状态管理的分类
+
+- 客户端状态管理技术：将状态保存在客户端。代表性的是Cookie技术。
+- 服务器状态管理技术：将状态保存在服务器端。代表性的是Session技术。
+
+------
+
+# 六、Cookie
+
+## 6.1 Cookie的概念
+
+- Cookie是在浏览器访问服务器某个资源时，由服务器在`HTTP响应头`中附带传送给浏览器的一段数据。
+- 这段数据被浏览器保存在本地，且在之后访问该服务器时，都会在`HTTP请求头`中携带上这段数据传给服务器。
+- 一个Cookie主要由标识该信息的`name`和`value`组成。
+
+## 6.2 创建和设置Cookie
+
+```java
+// 创建Cookie
+Cookie = new Cookie("code", code);
+// 设置Cookie路径
+ck.setPath("/projectName/subDir");
+// 设置Cookie有效时间
+ck.setMaxAge(-1);
+// 将Cookie添加到Response对象中，响应时发送给客户端
+response.addCookie(ck);
+```
+
+说明：
+
+- `setPath`设置被允许使用该Cookie的Servlet，默认为该工程下所有Servlet均可使用。
+- `setMaxAge`设置Cookie的有效时间，默认值为-1。
+  - 参数值大于0: 单位为秒。
+  - 参数值等于0: 浏览器关闭前有效，关闭后失效。
+  - 参数值小于0: 永久有效，会存储到本地内存中。
+- 通过`chrome://settings/content/cookies`可查看浏览器cookie信息。   
+
+## 6.3 获取Cookie
+
+```java
+// 通过request对象获取所有cookie
+Cookie[] cookies = req.geCookies();
+// 循环便利Cookie
+if (cookies != null) {
+    for(Cookie cookie: cookies) {
+ 	   System.out.println(cookie.getName+": "+cookie.getValue);
+	}
+}
+```
+
+## 6.4 修改Cookie
+
+- cookie的名和路径都一致时，会将新的值替换掉原有值。
+- 如果只有名一致但路径不一致， 则会创建新的cookie，原有cookie会被保留。
+
+## 6.5 编码与解码
+
+> Cookie默认不支持中文，所以传入中文参数时，需要对Unicode字符进行编码。
+
+- 编码：使用`java.net.URLEncoder`类的`encode(String str, String encoding)`方法。
+- 解码：使用`java.net.URLDecoder`类的`decode(String str, String encoding)`方法。
+
+### 6.6.1 编码
+
+```java
+// 新建Cookie
+Cookie cookie = new Cookie(URLEncoder.encode("姓名","utf-8"), URLEncoder.encode("张三","utf-8"));
+// 发送到客户端
+```
+
+### 6.6.2 解码
+
+```java
+if (req.getCookies() != null) {
+    for (Cookie cookie: req.getCookies()) {
+        String name = URLDecoder.decode(cookie.getName(), "utf-8");
+        String value = URLDecoder.decode(cookie.getValue(), "utf-8");
+        System.out.println(name + ": " + value);
+    }
+}
+```
+
+## 6.6 Cookie的优缺点
+
+> Cookie的优点
+
+- 简单轻便，是一种基于文本的轻量(键值对)结构。
+- 数据具有持久型，并且可以配置到期规则。
+
+> Cookie的缺点
+
+- 大小受到限制：大多数浏览器限制为4K或8K。
+- 有被禁用风险：浏览器提供禁用Cookie功能，因此无法保证客户端可以保存Cookie。
+- 潜在安全风险：Cookie可能会被篡改，会导致依赖于它的应用程序失败。
+
+------
+
+# 七、Session对象
+
+## 7.1 Session概述
+
+- Session用于记录用户的状态。
+- Session指的是在一段时间内，单个客户端与服务器的一连串相关的交互过程。
+- 在一个Session中，客户可能会多次访问同一资源，也可能访问不同服务器的资源。
+
+## 7.2 Session原理
+
+- 服务器会为每一次会话分配一个Session对象。
+- 同一个浏览器发起的多次请求，同属于一个Session。
+- 首次使用Session时，服务器会自动创建Session，并创建Cookie存储Session ID发送回客户端。
+- Session是由服务器创建的
+
+## 7.3 Session使用
+
+> Session的作用域
+
+- 一次会话是使用同一浏览器发送的多次请求。
+  - 浏览器不关闭，则会话一直存在。
+  - 浏览器关闭，则会话结束。
+- 可以将数据存入Session中，在一次会话的任意位置进行获取。
+- 可传递任意类型的数据(基础类型、对象、集合、数组)
+
+### 7.3.1 获取Session
 
